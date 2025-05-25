@@ -3,12 +3,7 @@ from prometheus_client import CollectorRegistry, Gauge, push_to_gateway
 import speedtest
 import time
 import os
-
-pushIp=os.getenv('PUSH_IP', 'No environment variable PUSH_IP set')
-pushGateway = 'http://' + pushIp + ':9091'
-jobName = 'internet_speed_test'
-clientNameLabel = 'client_name'
-clientNameValue = os.getenv('CLIENT_NAME', 'No environment variable CLIENT_NAME set')
+import argparse
 
 def run_speed_test():
     s = speedtest.Speedtest(secure=True)
@@ -34,6 +29,19 @@ def push_metrics(download, upload, ping, isp, clientIp):
     push_to_gateway(pushGateway, job=jobName, registry=registry, grouping_key={'instance': clientNameValue})
 
 def main():
+    global pushGateway, jobName, clientNameLabel, clientNameValue, clientInterval
+
+    parser = argparse.ArgumentParser(description="Get script arguments")
+    parser.add_argument("--server","-s",required=True,help="Destination server to send results to")
+    parser.add_argument("--name","-n",required=True,help="Name of the client")
+    args = parser.parse_args()
+
+    pushIp=args.server
+    pushGateway = 'http://' + pushIp + ':9091'
+    jobName = 'internet_speed_test'
+    clientNameLabel = 'client_name'
+    clientNameValue = args.name
+
     while True:
         try:
             download_speed, upload_speed, ping, isp, clientIp = run_speed_test()
@@ -42,7 +50,7 @@ def main():
         except Exception as e:
             print(f"Error: {e}")
         
-        time.sleep(15)
+        time.sleep(30)
 
 if __name__ == '__main__':
     main()
