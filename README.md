@@ -13,16 +13,15 @@ docker build -t speedtest-exporter .
 PUSH_IP : IP address or hostname of the prometheus push gateway
 CLIENT_NAME : A label to identify the client
 ```
-docker run -d -e PUSH_IP="<PUSH_IP>" -e CLIENT_NAME="<CLIENT_NAME>" --restart unless-stopped speedtest-exporter
+docker run -d --restart unless-stopped speedtest-exporter -s <PUSH_IP> -n <CLIENT_NAME>
 ```
 
 For example,
 ```
-docker run -d -e PUSH_IP="1.2.3.4" -e CLIENT_NAME="Bob" --restart unless-stopped speedtest-exporter
+docker run -d --restart unless-stopped speedtest-exporter -s 1.2.3.4 -n Bob
 ```
 # STEP 3. access grafana dashboard in browser
-Access http://<PUSH_IP>:3000.  
-Initial user password admin/5tr0nGpa55  
+Access http://<PUSH_IP>:3000 with provided password.
 Check internet-speed dashboard in grafana  
 
 # STEP 4. stop containers
