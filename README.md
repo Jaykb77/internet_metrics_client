@@ -21,7 +21,7 @@ For example,
 docker run -d --restart unless-stopped speedtest-exporter -s 1.2.3.4 -n Bob
 ```
 # STEP 3. access grafana dashboard in browser
-Access http://<PUSH_IP>:3000 with provided password.
+Access http://<PUSH_IP>:30000 with provided password.
 Check internet-speed dashboard in grafana  
 
 # STEP 4. stop containers
