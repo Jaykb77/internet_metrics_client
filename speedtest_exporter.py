@@ -37,7 +37,7 @@ def main():
     args = parser.parse_args()
 
     pushIp=args.server
-    pushGateway = 'http://' + pushIp + ':9091'
+    pushGateway = 'http://' + pushIp + ':30001'
     jobName = 'internet_speed_test'
     clientNameLabel = 'client_name'
     clientNameValue = args.name
